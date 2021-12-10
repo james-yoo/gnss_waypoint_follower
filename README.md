@@ -1,4 +1,4 @@
-# waypoint_follower
+# gnss_waypoint_follower
 
 This package provides waypoint following in ROS. Sends target waypoints to move_base and displays the waypoints in RVIZ.
 
