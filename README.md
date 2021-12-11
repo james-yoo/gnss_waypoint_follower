@@ -1,18 +1,23 @@
 # gnss_waypoint_follower
 
-This package provides waypoint following in ROS. Sends target waypoints to move_base and displays the waypoints in RVIZ.
+This package provides GNSS based waypoint following in ROS2. Sends target waypoints and displays the waypoints in RVIZ2.
 
-## 1. Nodes
-### 1.1 waypoint_follower2_node
-#### 1.1.1 Subscribed Topics
+## 1. Prerequisite
+- Ubuntu 20.04
+- ROS2 Foxy Fossa
+- Navigation2 stack (branch: foxy)
 
-`set_waypoints` ([`waypoint_follower_msgs/WaypointArray`](waypoint_follower_msgs/msg/WaypointArray.msg))
+## 2. Nodes
+### 2.1 waypoint_follower2_node
+#### 2.1.1 Subscribed Topics
+
+`gnss_waypoints` ([`gnss_waypoint_follower_msgs/WaypointArray`](gnss_waypoint_follower_msgs/msg/WaypointArray.msg))
 
 Clears the waypoint list, then sets this as new waypoints.
 
-#### 1.1.2 Published Topics
+#### 2.1.2 Published Topics
 
-`jackal_velocity_controller/cmd_vel` ([`geometry_msgs/Twist`](http://docs.ros.org/api/geometry_msgs/html/msg/Twist.html))
+`controller/cmd_vel` ([`geometry_msgs/Twist`](http://docs.ros.org/api/geometry_msgs/html/msg/Twist.html))
 
 The command velocity to be sent to the robot.
 
@@ -20,7 +25,7 @@ The command velocity to be sent to the robot.
 
 The incomplete waypoints.
 
-#### 1.1.3 Parameters
+#### 2.1.3 Parameters
 
 `~baselink_frame` (`string`, default: `"base_link"`)
 
