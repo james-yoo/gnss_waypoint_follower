@@ -27,14 +27,26 @@
 
 #include <memory>
 
-#include "gnss_waypoint_follower/gnss_waypoint_follower.hpp"
 #include "rclcpp/rclcpp.hpp"
+#include "gnss_waypoint_follower/gnss_waypoint_follower.hpp"
+
 
 int main(int argc, char ** argv)
 {
+  // force flush of the stdout buffer.
+  // this ensures a correct sync of all prints
+  // even when executed simultaneously within the launch file.
+  setvbuf(stdout, NULL, _IONBF, BUFSIZ);
+
   rclcpp::init(argc, argv);
-  auto node = std::make_shared<gnss_waypoint_follower::GnssWaypointFollower>();
-  rclcpp::spin(node->get_node_base_interface());
+
+  rclcpp::executors::SingleThreadedExecutor exe;
+
+  auto lc_node = std::make_shared<gnss_waypoint_follower::GnssWaypointFollower>("gnss_waypoint_follower_lc_node");
+
+  exe.add_node(lc_node->get_node_base_interface());
+  exe.spin();
+
   rclcpp::shutdown();
 
   return 0;

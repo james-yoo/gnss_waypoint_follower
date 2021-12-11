@@ -33,11 +33,17 @@
 #include <vector>
 
 #include "rclcpp/rclcpp.hpp"
+#include "rclcpp/publisher.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
+#include "rclcpp_lifecycle/lifecycle_publisher.hpp"
+#include "lifecycle_msgs/msg/transition.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "tf2_ros/transform_broadcaster.h"
 #include "tf2_ros/transform_listener.h"
 
+using namespace std::placeholders;
+using namespace std::chrono_literals;
+using namespace rclcpp_lifecycle::node_interfaces;
 
 namespace gnss_waypoint_follower
 {
@@ -48,15 +54,39 @@ namespace gnss_waypoint_follower
 class GnssWaypointFollower : public rclcpp_lifecycle::LifecycleNode
 {
 public:
-  /*
-   * @brief GnssWaypointFollower constructor
-   * @param options Additional options to control creation of the node.
-   */
-  explicit GnssWaypointFollower(const rclcpp::NodeOptions & options = rclcpp::NodeOptions());
-  /*
-   * @brief GnssWaypointFollower destructor
-   */
+
+  // @brief GnssWaypointFollower constructor
+  // @param node name
+  // @param use intra process communication if true
+  explicit GnssWaypointFollower(
+    const std::string & node_name,
+    bool intra_process_comms = false
+  );
+
+  // @brief GnssWaypointFollower destructor
   ~GnssWaypointFollower();
+
+protected:
+
+  // @brief being called when the lifecycle node enters the "configuring" state.
+  LifecycleNodeInterface::CallbackReturn
+  on_configure(const rclcpp_lifecycle::State & state);
+
+  // @brief being called when the lifecycle node enters the "activating" state.
+  LifecycleNodeInterface::CallbackReturn
+  on_activate(const rclcpp_lifecycle::State & state);
+
+  // @brief being called when the lifecycle node enters the "deactivating" state
+  LifecycleNodeInterface::CallbackReturn
+  on_deactivate(const rclcpp_lifecycle::State & state);
+
+  // @brief being called when the lifecycle node enters the "cleaningup" state
+  LifecycleNodeInterface::CallbackReturn
+  on_cleanup(const rclcpp_lifecycle::State & state);
+
+  // @brief being called when the lifecycle node enters the "shuttingdown" state
+  LifecycleNodeInterface::CallbackReturn
+  on_shutdown(const rclcpp_lifecycle::State & state);
 };
 
 }

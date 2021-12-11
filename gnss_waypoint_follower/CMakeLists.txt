@@ -4,6 +4,7 @@ project(gnss_waypoint_follower)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
+find_package(lifecycle_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
@@ -32,6 +33,7 @@ target_include_directories(${library_name} PRIVATE src/include)
 set(dependencies
   rclcpp
   rclcpp_lifecycle
+  lifecycle_msgs
   std_msgs
   geometry_msgs
   nav_msgs
