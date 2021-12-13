@@ -37,9 +37,11 @@
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 #include "rclcpp_lifecycle/lifecycle_publisher.hpp"
 #include "lifecycle_msgs/msg/transition.hpp"
-#include "geometry_msgs/msg/pose_stamped.hpp"
 #include "tf2_ros/transform_broadcaster.h"
 #include "tf2_ros/transform_listener.h"
+#include "geometry_msgs/msg/pose_stamped.hpp"
+#include "geometry_msgs/msg/twist.hpp"
+#include "gnss_waypoint_follower_msgs/msg/waypoint_array.hpp"
 
 using namespace std::placeholders;
 using namespace std::chrono_literals;
@@ -66,6 +68,12 @@ public:
   // @brief GnssWaypointFollower destructor
   ~GnssWaypointFollower();
 
+  // common functions
+  // e.g. json parcer, xml parcer, ...
+
+  // navigation_common functions
+  // e.g. tf conversion, LL2UTM conversion, ...
+
 protected:
 
   // @brief being called when the lifecycle node enters the "configuring" state.
@@ -87,6 +95,27 @@ protected:
   // @brief being called when the lifecycle node enters the "shuttingdown" state
   LifecycleNodeInterface::CallbackReturn
   on_shutdown(const rclcpp_lifecycle::State & state);
+
+  // Declare parameter variables
+  std::string map_frame_;
+  std::string odom_frame_;
+  std::string base_link_frame_;
+  std::string waypoints_file_;
+  std::string topic_cmd_vel_;
+  bool include_start_pose_;
+  double linear_velocity_;
+  double angular_velocity_;
+  double goal_distance_;
+
+  // Member variables
+  gnss_waypoint_follower_msgs::msg::WaypointArray waypoints_array_;
+
+private:
+
+  // A lifecycle publisher is inactive by creation and has to be
+  // activated to publish messages into the ROS world.
+  std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<geometry_msgs::msg::Twist>> pub_cmd_vel_;
+
 };
 
 }
